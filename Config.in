@@ -1,0 +1,12 @@
+menu "Ralink HW NAT API"
+	depends on PACKAGE_kmod-ralink-spec-api
+	
+config CONFIG_RA_HW_NAT_API
+	bool "Ralink Hardware NAT API"
+	default y
+	
+config CONFIG_RA_HW_NAT_WIFI_NEW_ARCH_API
+	bool "Ralink HW NAT for new arch WIFI"
+	default n
+	
+endmenu
