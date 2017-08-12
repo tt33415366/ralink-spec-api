@@ -9,14 +9,15 @@
 #include <linux/mtd/mtd.h>
 
 struct proc_dir_entry *procRegDir;
-#if defined (CONFIG_RA_HW_NAT_API)
-extern int (*ra_sw_nat_hook_tx)(VOID *skb);
-extern int (*ra_sw_nat_hook_rx)(VOID *skb);
-#if defined (CONFIG_RA_HW_NAT_WIFI_NEW_ARCH_API)
-extern void (*ppe_dev_register_hook) (VOID  *dev);
-extern void (*ppe_dev_unregister_hook) (VOID  *dev);
-#endif /* CONFIG_RA_HW_NAT_WIFI_NEW_ARCH_API */
-#endif /* CONFIG_RA_HW_NAT_API */
+#if defined (RA_HW_NAT_API)
+typedef void VOID;
+int (*ra_sw_nat_hook_tx)(VOID *skb);
+int (*ra_sw_nat_hook_rx)(VOID *skb);
+#if defined (RA_HW_NAT_WIFI_NEW_ARCH_API)
+void (*ppe_dev_register_hook) (VOID  *dev);
+void (*ppe_dev_unregister_hook) (VOID  *dev);
+#endif /* RA_HW_NAT_WIFI_NEW_ARCH_API */
+#endif /* RA_HW_NAT_API */
 
 static int __ra_mtd_write(struct mtd_info *mtd, loff_t to, size_t len, const u_char *buf)
 {
@@ -86,14 +87,11 @@ static int __ra_mtd_write(struct mtd_info *mtd, loff_t to, size_t len, const u_c
  *   - return -errno if failed
  *   - return the number of bytes read/written if successed
  */
-#ifdef RA_MTD_RW_BY_NUM
+#ifdef RA_MTD_RW_BY_NUM_API
 int ra_mtd_write(int num, loff_t to, size_t len, const u_char *buf)
 {
 	int ret = -1;
-	size_t rdlen, wrlen;
 	struct mtd_info *mtd;
-	struct erase_info ei;
-	u_char *bak = NULL;
 
 	mtd = get_mtd_device(NULL, num);
 	if (IS_ERR(mtd))
@@ -134,7 +132,7 @@ static int __ra_mtd_read(struct mtd_info *mtd, loff_t from, size_t len, u_char *
 	
 	return ret;
 }
-#ifdef RA_MTD_RW_BY_NUM
+#ifdef RA_MTD_RW_BY_NUM_API
 int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf)
 {
 	int ret;
@@ -164,7 +162,7 @@ int ra_mtd_read_nm(char *name, loff_t from, size_t len, u_char *buf)
 	return ret;
 }
 
-#ifdef RA_MTD_RW_BY_NUM
+#ifdef RA_MTD_RW_BY_NUM_API
 EXPORT_SYMBOL(ra_mtd_write);
 EXPORT_SYMBOL(ra_mtd_read);
 #endif

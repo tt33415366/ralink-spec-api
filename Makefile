@@ -13,10 +13,13 @@ PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
+PKG_CONFIGS := CONFIG_RA_HW_NAT_API CONFIG_RA_HW_NAT_WIFI_NEW_ARCH_API \
+	CONFIG_RA_MTD_RW_BY_NUM_API
+
 define KernelPackage/$(PKG_NAME)
   CATEGORY:=Ralink
   TITLE:=Ralink Specific API driver
-  #DEPENDS:= @TARGET_ramips
+  DEPENDS:= @TARGET_ramips
   FILES:=$(PKG_BUILD_DIR)/ralink-spec-api.ko
   AUTOLOAD:=$(call AutoLoad,30,ralink-spec-api)
 endef
@@ -41,6 +44,7 @@ define Build/Compile
 		CROSS_COMPILE="$(TARGET_CROSS)" \
 		ARCH="$(LINUX_KARCH)" \
 		SUBDIRS="$(PKG_BUILD_DIR)" \
+		$(foreach c, $(PKG_CONFIGS), $(if $($(c)), $(c)=$($(c)))) \
 		modules
 endef
 
