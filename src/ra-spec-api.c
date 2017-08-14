@@ -9,13 +9,18 @@
 #include <linux/mtd/mtd.h>
 
 struct proc_dir_entry *procRegDir;
+EXPORT_SYMBOL(procRegDir);
 #if defined (RA_HW_NAT_API)
 typedef void VOID;
 int (*ra_sw_nat_hook_tx)(VOID *skb);
 int (*ra_sw_nat_hook_rx)(VOID *skb);
+EXPORT_SYMBOL(ra_sw_nat_hook_tx);
+EXPORT_SYMBOL(ra_sw_nat_hook_rx);
 #if defined (RA_HW_NAT_WIFI_NEW_ARCH_API)
 void (*ppe_dev_register_hook) (VOID  *dev);
 void (*ppe_dev_unregister_hook) (VOID  *dev);
+EXPORT_SYMBOL(ppe_dev_register_hook);
+EXPORT_SYMBOL(ppe_dev_unregister_hook);
 #endif /* RA_HW_NAT_WIFI_NEW_ARCH_API */
 #endif /* RA_HW_NAT_API */
 
